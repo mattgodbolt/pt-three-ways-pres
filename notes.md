@@ -17,7 +17,13 @@
   * some pictures needed here, maybe showing difference between  PT and RT too?
   * Best of all, the code to a PT is pretty straightforward
   * Show smallpt
-  
+
+* My path tracer
+  * Spheres and triangles
+  * Diffuse (TODO & specular?)
+  * Reflection
+  * "Ways" conform to simple common scene builder API and output
+
 ---
 
 * What are the styles
@@ -27,15 +33,24 @@
 
 # Object-Oriented
 * Overall design
+  * Scene graph with a base class
+  * Show base class
+  * Renderer object that takes a Scene and a camera
 * Testability
+  * Specific tests for sphere, triangle
+  * `mocked` out tests?
 * Performance
-* Show devirtualisation in CE?
+  * TODO
+  * Show devirtualisation in CE?
+* Build time
+
 ---
 
 # Functional
 * Design
 * Testability
 * Performance
+* Build time
 * Admission about `std::optional<>` (maybe?)
 * Observations; found bugs using it (see below), plus perf benefits
 ---
@@ -45,6 +60,7 @@
 * Expectations, will be fastest!
 * Testability
 * Performance?
+* Build time
 
 ---
 
@@ -110,3 +126,11 @@ OVERALL NOTES
 * show FP (make note that OO could benefit from learnings of FP)
 * show DoD (make note that this uses some things learned, and can feed back) e.g. radius squared
   * dod seems harder to test?
+* Noticed code imporved as I went on
+* Added strong Norm type and was able to remove few unnecessary tests
+
+```
+C++ is a multi-paradigm language allowing us as developers to pick and choose among a variety of styles: procedural, functional, object oriented, hybrids, and more. How does the style of programming we choose affect code clarity, testability, ease of changes, compile time and run-time performance? 
+
+In this talk Matt will show a toy path tracer project (a form of ray tracer) implemented in three different styles: traditional object oriented, functional, and data-oriented design. He'll then compare and contrast his experiences developing in each case, showing how often the compiler is able to reduce each style to similar performing code. There's certain to be some surprises - and of course some Compiler Explorer usage!
+```

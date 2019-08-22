@@ -1,6 +1,8 @@
 <div class="white-bg">
 
-# O HAI
+## A story
+
+<!-- TODO Maybe images of mandelbrot, emulator and path tracer? -->
 
 <aside class="notes">
 Hi everyone, welcome to my talk. This is going to be a story firstly and foremostly about C++ and how multi-paradigm it really is.
@@ -22,15 +24,19 @@ I guess this is also a story about how cool and exciting graphics programming is
 ---
 <div class="white-bg">
 
-# This talk is NOT
+## This talk is NOT
 
 * Expert advice on:
   * path tracing
   * C++ code styles
-* Style manifesto
+* Style ?? is best!
 
 <aside class="notes">
-Some ground rules.. TODO...
+Before we go too much further I have an admission: this talk is NOT quite a lot of things.
+
+I AM NOT AN EXPERT AT ANY OF THIS!
+
+This talk is not to be considered advice in general on how to do path tracing, or expert advice on the various C++ code styles. The code is quite a caricature in some places, and that's a little to prove a point and to winkle out the differences in style. Nobody really writes code that looks like this. This is also not a manifesto of mine on which style is best. It's a counterpoint of them all, and what we can learn from widening our minds and viewing coding problems through different lenses.
 </aside>
 
 </div>
@@ -38,9 +44,10 @@ Some ground rules.. TODO...
 ---
 <div class="white-bg">
 
-# But it is
+## But it is
 
 * My interpretation
+* Real code
 * Informative
 * Interesting & fun (hopefully)<!-- .element: class="fragment" -->
 
@@ -49,7 +56,7 @@ Some ground rules.. TODO...
 ---
 <div class="white-bg">
 
-# Path tracing
+## Path tracing
 
 <img src="images/smallpt_25k.png" alt="A rendering of two shiny spheres in a box, brightly lit from above" width="auto" height="400">
 
@@ -66,9 +73,9 @@ I show this not because it's a cool image (although it is), but to demonstrate w
 ---
 <div class="white-bg">
 
-# Path tracing
+## Path tracing
 
-IMAGES
+<img src="images/pt1.png">
 
 <aside class="notes">
 What's going on? You've probably heard of ray tracing: path tracing is a generalised form of ray tracing which produces more accurate images but at a vastly increased cost.
@@ -87,7 +94,38 @@ We do that for every pixel, and voila! We have a pretty image!
 ---
 <div class="white-bg">
 
-# My path tracer
+## Path tracing
+
+<img src="images/pt2.png">
+
+</div>
+
+---
+<div class="white-bg">
+
+## Path tracing
+
+<img src="images/pt3.png">
+
+</div>
+
+---
+<div class="white-bg">
+
+## Path tracing
+
+For each pixel:
+
+1. Fire a zillion rays into the scene<!-- .element: class="fragment" -->
+2. Bounce them around and see where they end up<!-- .element: class="fragment" -->
+3. Average them out<!-- .element: class="fragment" -->
+
+</div>
+
+---
+<div class="white-bg">
+
+## My path tracer
 
 * Simple materials
   * Diffuse

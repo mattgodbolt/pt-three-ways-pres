@@ -70,7 +70,7 @@ SOME NOTESES
 ```cpp
 Vec3 colour;
 for (int sample = 0; sample < numSamples; ++sample) {
-  auto ray = camera_.ray(x, y, rng);
+  auto ray = camera_.randomRay(x, y, rng);
   colour += radiance(rng, ray);
 }
 return colour / numSamples;

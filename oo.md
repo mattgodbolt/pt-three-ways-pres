@@ -12,9 +12,6 @@
 </div>
 
 ---
-
-<div class="white-bg">
-
 ```cpp
 class Vec3 {
   double x_{}, y_{}, z_{};
@@ -26,12 +23,7 @@ public:
 
 ```
 
-</div>
-
 ---
-
-<div class="white-bg">
-
 ```cpp
   constexpr Vec3 operator+(const Vec3 &b) const noexcept {
     return Vec3(x_ + b.x_, y_ + b.y_, z_ + b.z_);
@@ -45,19 +37,15 @@ public:
 
 ```
 
-</div>
-
 ---
-
 <div class="white-bg">
 
-## Style 1
+# Style 1
 ## Object Oriented
 
 </div>
 
 ---
-
 ```cpp
 class Primitive {
 public:
@@ -77,3 +65,15 @@ public:
 <aside class="notes">
 SOME NOTESES
 </aside>
+
+---
+```cpp
+Vec3 colour;
+for (int sample = 0; sample < numSamples; ++sample) {
+  auto x = (pixelX + unit(rng)) / width;
+  auto y = (pixelY + unit(rng)) / height;
+  auto ray = camera_.ray(2 * x - 1, 2 * y - 1, rng);
+  colour += radiance(rng, ray);
+}
+return colour / numSamples;
+```

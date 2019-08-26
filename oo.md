@@ -112,6 +112,7 @@ Vec3 Renderer::radiance(
 
       auto p = unit(rng);
 
+// TODO update
       auto newRay = bounce(material, hit, ray, u, v, p);
 
       result += radiance(rng, newRay, depth + 1, 1, 1);
@@ -121,6 +122,7 @@ Vec3 Renderer::radiance(
 
 ---
 ```cpp
+// TODO update
   return material.emissive + 
     material.diffuse * result / (numUSamples * numVSamples);
 }

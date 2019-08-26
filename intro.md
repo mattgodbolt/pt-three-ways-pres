@@ -148,6 +148,23 @@ Of course, I had to write it three times too! I learned it's really hard to igno
 
 ## My path tracer
 
+<img src="images/cornell-1000spp.png"  width="auto" height="400" alt="A scene of simple shapes in a brightly lit box">
+<img src="images/suzanne-1000spp.png"  width="auto" height="400" alt="A rendering of a stylised monkey">
 
+<div class="attribution">Model credit: "Suzanne" from Blender<br>With thanks to Michael Fogelman</div>
+
+</div>
+
+
+---
+<div class="white-bg">
+
+## Styles
+
+### TODO this slide! and where it goes?
+
+* OO: Model the problem as a hierarchy of "objects". Behaviour on objects 
+* FP: Model the problem as simple (mostly immutable) data, behaviour in free functions
+* DoD: Work backwards from the operations, designing the data around most common operations
 
 </div>

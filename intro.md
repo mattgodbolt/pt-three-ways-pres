@@ -182,7 +182,7 @@ Of course, I had to write it three times too! I learned it's really hard to igno
 Model the problem as a hierarchy of "objects". Behaviour attached to objects directly through vtables.
 
 ### FP
-Model the problem as simple (mostly immutable) data, behaviour in free functions. Function overloading for
+Model the problem as simple immutable data, behaviour in free functions. Function overloading for polymorphism.
 
 ### DoD
 Work backwards from the operations, designing the data around most common operations

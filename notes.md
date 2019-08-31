@@ -134,3 +134,9 @@ C++ is a multi-paradigm language allowing us as developers to pick and choose am
 
 In this talk Matt will show a toy path tracer project (a form of ray tracer) implemented in three different styles: traditional object oriented, functional, and data-oriented design. He'll then compare and contrast his experiences developing in each case, showing how often the compiler is able to reduce each style to similar performing code. There's certain to be some surprises - and of course some Compiler Explorer usage!
 ```
+
+... argh
+
+```
+sorry, unimplemented: mangling reference_type
+```

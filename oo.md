@@ -88,8 +88,140 @@ Vec3 Renderer::radiance(
 
 ---
 ```cpp
-// TODO update
-  return material.emissive + 
-    material.diffuse * result / (numUSamples * numVSamples);
+  return material.emissive + result / (numUSamples * numVSamples);
 }
 ```
+
+---
+
+### Intersection <!--- .element: class="white-bg" --->
+
+---
+
+```cpp
+struct SpherePrimitive : Primitive {
+  Sphere sphere;
+  Material material;
+  SpherePrimitive(const Sphere &sphere, const Material &material)
+      : sphere(sphere), material(material) {}
+  [[nodiscard]] bool intersect(const Ray &ray,
+                               IntersectionRecord &rec) const override {
+    Hit hit;
+    if (!sphere.intersect(ray, hit))
+      return false;
+    rec = IntersectionRecord{hit, material};
+    return true;
+  }
+};
+```
+
+---
+
+```cpp
+bool Sphere::intersect(const Ray &ray, Hit &hit) const noexcept {
+  // Solve t^2*d.d + 2*t*(o-p).d + (o-p).(o-p)-R^2 = 0
+  auto op = centre_ - ray.origin();
+  auto radiusSquared = radius_ * radius_;
+  auto b = op.dot(ray.direction());
+  auto determinant = b * b - op.lengthSquared() + radiusSquared;
+  if (determinant < 0)
+    return false;
+
+  determinant = sqrt(determinant);
+  auto minusT = b - determinant;
+  auto plusT = b + determinant;
+  if (minusT < Epsilon && plusT < Epsilon)
+    return false;
+
+  auto t = minusT > Epsilon ? minusT : plusT;
+  auto hitPosition = ray.positionAlong(t);
+  auto normal = (hitPosition - centre_).normalised();
+  bool inside = normal.dot(ray.direction()) > 0;
+  if (inside)
+    normal = -normal;
+  hit = Hit{t, inside, hitPosition, normal};
+  return true;
+}
+```
+
+---
+
+```cpp
+bool Triangle::intersect(const Ray &ray, Hit &hit) const noexcept {
+  auto pVec = ray.direction().cross(vVector());
+  auto det = uVector().dot(pVec);
+  // ray and triangle are parallel if det is close to 0
+  if (fabs(det) < Epsilon)
+    return false;
+
+  auto backfacing = det < Epsilon;
+
+  auto invDet = 1.0 / det;
+  auto tVec = ray.origin() - vertices_[0];
+  auto u = tVec.dot(pVec) * invDet;
+  if (u < 0.0 || u > 1.0)
+    return false;
+
+  auto qVec = tVec.cross(uVector());
+  auto v = ray.direction().dot(qVec) * invDet;
+  if (v < 0 || u + v > 1)
+    return false;
+
+  auto t = vVector().dot(qVec) * invDet;
+
+  if (t < Epsilon)
+    return false;
+
+  auto normalUdelta = normals_[1] - normals_[0];
+  auto normalVdelta = normals_[2] - normals_[0];
+  // TODO: proper barycentric coordinates
+  auto normal =
+      ((u * normalUdelta) + (v * normalVdelta) + normals_[0]).normalised();
+  if (backfacing)
+    normal = -normal;
+  hit = Hit{t, backfacing, ray.positionAlong(t), normal};
+  return true;
+}
+```
+
+---
+
+## Materials <!--- .element: class="white-bg" --->
+
+---
+
+```cpp
+Material::Bounce Material::bounce(const Hit &hit, const Ray &incoming, double u,
+                                  double v, double p) const {
+  double iorFrom = 1.0;
+  double iorTo = mat_.indexOfRefraction;
+  auto reflectivity = mat_.reflectivity;
+  if (hit.inside) {
+    std::swap(iorFrom, iorTo);
+  }
+  if (reflectivity < 0) {
+    reflectivity = hit.normal.reflectance(incoming.direction(), iorFrom, iorTo);
+  }
+  if (p < reflectivity) {
+    return Bounce{
+        Vec3(1, 1, 1),
+        Ray(hit.position, coneSample(hit.normal.reflect(incoming.direction()),
+                                     mat_.reflectionConeAngleRadians, u, v))};
+  } else {
+    auto basis = OrthoNormalBasis::fromZ(hit.normal);
+    return Bounce{mat_.diffuse,
+                  Ray(hit.position, hemisphereSample(basis, u, v))};
+  }
+}
+```
+
+---
+
+<div class="white-bg">
+
+### Things I liked
+
+* Code layout
+* TODO
+
+</div>

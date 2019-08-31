@@ -2,6 +2,11 @@
 
 ## A story
 
+<img src="images/mandel.png" class="fragment" alt="A mandelbrot set, generated in ASCII by a python program" width="531" height="400">
+<img src="images/jsbeeb.png" class="fragment" alt="An emulated BBC Micro playing a game, on a website" width="528" height="400">
+
+### Apply to C++ <!-- .element: class="fragment" -->
+
 <!-- TODO Maybe images of mandelbrot, emulator and path tracer? -->
 
 <aside class="notes">
@@ -48,7 +53,6 @@ This talk is not to be considered advice in general on how to do path tracing, o
 
 * My interpretation
 * Real code
-* Informative
 * Interesting & fun (hopefully)<!-- .element: class="fragment" -->
 
 </div>
@@ -69,6 +73,15 @@ I show this not because it's a cool image (although it is), but to demonstrate w
 </aside>
 
 </div>
+
+---
+<div class="white-bg">
+
+## Path tracing
+
+<img src="images/smallpt-source.png" alt="A snippet of C++ code for smallpt" width="536" height="400">
+
+<div class="attribution">Image credit: <a href="http://www.kevinbeason.com/smallpt/">Kevin Beason</a></div>
 
 ---
 <div class="white-bg">
@@ -128,9 +141,7 @@ For each pixel:
 ## My path tracer
 
 * Simple materials
-  * Diffuse
-  * Specular (shiny)
-* Spheres & triangles
+* Spheres & triangles only
 * Scenes in code
 * Written 3 times!
 
@@ -151,7 +162,7 @@ Of course, I had to write it three times too! I learned it's really hard to igno
 <img src="images/cornell-1000spp.png"  width="auto" height="400" alt="A scene of simple shapes in a brightly lit box">
 <img src="images/suzanne-1000spp.png"  width="auto" height="400" alt="A rendering of a stylised monkey">
 
-<div class="attribution">Model credit: "Suzanne" from Blender<br>With thanks to Michael Fogelman</div>
+<div class="attribution">Model credit: "Suzanne" from Blender<br>With thanks to Michael Fogleman</div>
 
 </div>
 
@@ -161,10 +172,63 @@ Of course, I had to write it three times too! I learned it's really hard to igno
 
 ## Styles
 
-### TODO this slide! and where it goes?
+* Object Oriented <!-- .element: class="fragment" -->
+* Functional Programming <!-- .element: class="fragment" -->
+* Data-Oriented Design <!-- .element: class="fragment" -->
 
-* OO: Model the problem as a hierarchy of "objects". Behaviour on objects 
-* FP: Model the problem as simple (mostly immutable) data, behaviour in free functions
-* DoD: Work backwards from the operations, designing the data around most common operations
+<aside class="notes">
+
+### OO
+Model the problem as a hierarchy of "objects". Behaviour attached to objects directly through vtables.
+
+### FP
+Model the problem as simple (mostly immutable) data, behaviour in free functions. Function overloading for
+
+### DoD
+Work backwards from the operations, designing the data around most common operations
+
+</aside>
 
 </div>
+
+---
+
+<div class="white-bg">
+
+## General approach
+
+* Shared basic math library
+  * `Vec3`
+  * `Ray`
+  * `Hit`
+* Some simple "util" classes
+* Shared `Material` classes
+
+</div>
+
+---
+```cpp
+class Vec3 {
+  double x_{}, y_{}, z_{};
+
+public:
+  constexpr Vec3() noexcept = default;
+  constexpr Vec3(double x, double y, double z) noexcept 
+    : x_(x), y_(y), z_(z) {}
+
+  [[nodiscard]] constexpr double x() const noexcept { return x_; }
+  [[nodiscard]] constexpr double y() const noexcept { return y_; }
+  [[nodiscard]] constexpr double z() const noexcept { return z_; }
+```
+
+---
+```cpp
+  constexpr Vec3 operator+(const Vec3 &b) const noexcept {
+    return Vec3(x_ + b.x_, y_ + b.y_, z_ + b.z_);
+  }
+  constexpr Vec3 operator-(const Vec3 &b) const noexcept {
+    return Vec3(x_ - b.x_, y_ - b.y_, z_ - b.z_);
+  }
+
+  // ...and other operators, dot products, cross products, etc...
+```

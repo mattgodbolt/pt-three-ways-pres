@@ -173,12 +173,16 @@
         }
 
         div.footer {
+            z-index: 1;
             font-size: small;
             font-style: italic;
             position: absolute;
             bottom: 1em;
-            width: 100%;
             text-align: center;
+            background: #ddd;
+            box-shadow: 5px 5px #888;
+            border-radius: 5px;
+            padding: 10px !important;
         }
     </style>
 
@@ -204,13 +208,15 @@
             </div>
         </section>
         <section data-markdown="intro.md" data-separator-vertical="^---\n"></section>
-        <section data-markdown="oo.md" data-separator-vertical="^---\n"></section>
+        <section data-markdown="oo.md" data-separator-vertical="^---\n" data-background="images/bg/lamps_228634577_o.jpg"></section>
         <section data-markdown="fp.md" data-separator-vertical="^---\n"></section>
         <section data-markdown="dod.md" data-separator-vertical="^---\n"></section>
     </div>
     <div class="footer">
         &copy; <a href="https://twitter.com/mattgodbolt">Matt Godbolt</a> 2019, All Rights Reserved (unless otherwise
-        noted)
+        noted)<br>
+        B/g images &copy; <a href="https://twitter.com/romainguy">Romain Guy</a> <a
+            href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>
     </div>
 </div>
 

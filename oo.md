@@ -1,86 +1,54 @@
 <div class="white-bg">
 
-## General approach
-
-* Shared basic math library
-  * `Vec3`
-  * `Ray`
-  * `Hit`
-* Some simple "util" classes
-* Shared `Material` classes
-
-</div>
-
----
-```cpp
-class Vec3 {
-  double x_{}, y_{}, z_{};
-
-public:
-  constexpr Vec3() noexcept = default;
-  constexpr Vec3(double x, double y, double z) noexcept 
-    : x_(x), y_(y), z_(z) {}
-
-```
-
----
-```cpp
-  constexpr Vec3 operator+(const Vec3 &b) const noexcept {
-    return Vec3(x_ + b.x_, y_ + b.y_, z_ + b.z_);
-  }
-  // ...and other operators, dot products, cross products, etc...
-
-  [[nodiscard]] constexpr double x() const noexcept { return x_; }
-  [[nodiscard]] constexpr double y() const noexcept { return y_; }
-  [[nodiscard]] constexpr double z() const noexcept { return z_; }
-};
-
-```
-
----
-<div class="white-bg">
-
 # Style 1
 ## Object Oriented
 
 </div>
 
 ---
-```cpp
+
+<pre><code class="cpp" data-trim data-noescape>
 class Primitive {
 public:
   virtual ~Primitive() = default;
-
-  struct IntersectionRecord {
+  
+<div class="fragment highlight-current-code">  struct IntersectionRecord {
     Hit hit;
     Material material;
   };
-
-  [[nodiscard]] virtual bool intersect(
+</div>
+  [[nodiscard]] <span class="fragment highlight-current-code">virtual</span> bool intersect(
     const Ray &ray, 
-    IntersectionRecord &intersection) const = 0;
+    <span class="fragment highlight-current-code">IntersectionRecord &intersection</span>) const = 0;
 };
-```
+</code></pre>
 
 <aside class="notes">
 SOME NOTESES
 </aside>
 
 ---
-```cpp
-for (int y = 0; y < heignt; ++y) {
+
+<pre><code class="cpp" data-trim data-noescape>
+<div class="fragment highlight-current-code" data-fragment-index="1">for (int y = 0; y < height; ++y) {
   for (int x = 0; x < width; ++x) {
-    Vec3 colour;
-    for (int sample = 0; sample < numSamples; ++sample) {
-      auto ray = camera_.randomRay(x, y, rng);
-      colour += radiance(rng, ray, NumUSamples, NumVSamples);
-    }
-    output.plot(x, y, colour / numSamples);
-  }
+</div>    Vec3 colour;
+<div class="fragment highlight-current-code" data-fragment-index="2">    for (int sample = 0; sample < numSamples; ++sample) {
+</div>      <span class="fragment highlight-current-code" data-fragment-index="3">auto ray = camera_.randomRay(x, y, rng);</span>
+      colour += <span class="fragment highlight-current-code" data-fragment-index="4">radiance(rng, ray, NumUSamples, NumVSamples);</span>
+<div class="fragment highlight-current-code" data-fragment-index="2">    }
+</div>    <span class="fragment highlight-current-code" data-fragment-index="5">output.plot(x, y, colour / numSamples);</span>
+<div class="fragment highlight-current-code" data-fragment-index="1">  }
 }
-```
+</div>
+</code></pre>
 
 ---
+
+### Radiance <!--- .element: class="white-bg" --->
+
+---
+
 ```cpp
 Vec3 Renderer::radiance(
     std::mt19937 &rng, const Ray &ray, int depth,
@@ -109,13 +77,11 @@ Vec3 Renderer::radiance(
     for (auto vSample = 0; vSample < numVSamples; ++vSample) {
       auto u = (uSample + unit(rng)) / numUSamples;
       auto v = (vSample + unit(rng)) / numVSamples;
-
       auto p = unit(rng);
 
-// TODO update
-      auto newRay = bounce(material, hit, ray, u, v, p);
-
-      result += radiance(rng, newRay, depth + 1, 1, 1);
+      auto nextPath = material.bounce(hit, ray, u, v, p);
+      result += nextPath.colour * 
+            radiance(rng, nextPath.bounced, depth + 1);
     }
   }
 ```

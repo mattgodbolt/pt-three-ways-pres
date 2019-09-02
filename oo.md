@@ -7,6 +7,13 @@
 
 ---
 
+* Scene storage
+* Radiance
+* Materials
+* Intersection
+
+---
+
 <pre><code class="cpp" data-trim data-noescape>
 class Primitive {
 public:
@@ -88,7 +95,7 @@ Vec3 Renderer::radiance(
 
 ---
 ```cpp
-  return material.emissive + result / (numUSamples * numVSamples);
+  return material.totalEmission(result / (numUSamples * numVSamples));
 }
 ```
 
@@ -222,6 +229,7 @@ Material::Bounce Material::bounce(const Hit &hit, const Ray &incoming, double u,
 ### Things I liked
 
 * Code layout
-* TODO
+* Testability notes
+* Performance
 
 </div>

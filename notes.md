@@ -128,6 +128,7 @@ OVERALL NOTES
   * dod seems harder to test?
 * Noticed code imporved as I went on
 * Added strong Norm type and was able to remove few unnecessary tests
+  - and was able to use it to discover unnecessary normalisation!
 
 ```
 C++ is a multi-paradigm language allowing us as developers to pick and choose among a variety of styles: procedural, functional, object oriented, hybrids, and more. How does the style of programming we choose affect code clarity, testability, ease of changes, compile time and run-time performance? 

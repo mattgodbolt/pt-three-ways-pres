@@ -8,10 +8,10 @@
 
 ---
 
-down the line?
-# purposefully no acceleration structures
-
+### Future work down the line?
+* purposefully no acceleration structures
 * k-d tree means subset? O(N) vs O(log N)
+* not talked about threading (though had to put it in)
 * Dod: first bounce: defer next radiance call?
   - make a queue of pixel/Ray/depth
   
@@ -26,9 +26,8 @@ down the line?
 [77852.398975] mce: CPU3: Package temperature above threshold, cpu clock throttled (total events = 144933)
 ```
 
-* Amazon 96-core instance
-  - Intel(R) Xeon(R) Platinum 8275CL CPU @ 3.00GHz
-* couldn't do `sudo cpupower frequency-set --governor performance`
+* Intel(R) Core(TM) i9-9980XE CPU @ 3.00GHz
+* `sudo cpupower frequency-set --governor performance`
 * Single threaded
 
 </div>
@@ -38,11 +37,12 @@ down the line?
 
 <div class="white-bg">
 
-TODO: redo
-* Cornell box scene 8spp (1 sphere, 38 triangles)
-* OO: 18 / 18 / 18 
-* fp: 24 / 24 / 24
-* DoD: 19 / 19 / 19
+<img src="images/cornell-bench.png">
+
+* Cornell box scene 256x256 32spp (1 sphere, 38 triangles)
+* OO: 62s 
+* fp: 77s
+* DoD: 65s
 
 </div>
 
@@ -50,24 +50,24 @@ TODO: redo
 
 <div class="white-bg">
 
-TODO: redo
+<img src="images/suzanne-bench.png">
 
-* Suzanne 8spp (2 spheres, 970 triangles)
-* OO: 90
-* fp: 145
-* DoD: 117
+* Suzanne 256x256 8spp (2 spheres, 970 triangles)
+* OO: 79s
+* fp: 120s
+* DoD: 104s
 
 </div>
 
 ---
 <div class="white-bg">
 
-TODO: redo
+<img src="images/owl-bench.png">
 
 * Owl scene 128spp (100 spheres, 12 triangles)
-* OO: 76 / 76 / 77
-* fp: 115 / 116 / 115
-* DoD: 64 / 64 / 64
+* OO: 68s
+* fp: 96s
+* DoD: 64s
 
 </div>
 
@@ -75,15 +75,9 @@ TODO: redo
 
 <div class="white-bg">
 
-TODO: redo
-
-* CE logo
-* OO:
-* fp:
-* DoD:
+CE logo?
 
 </div>
-
 
 ---
 

@@ -9,6 +9,7 @@
 ---
 
 down the line?
+# purposefully no acceleration structures
 
 * k-d tree means subset? O(N) vs O(log N)
 * Dod: first bounce: defer next radiance call?
@@ -35,34 +36,58 @@ down the line?
 
 ---
 
+<div class="white-bg">
+
+TODO: redo
 * Cornell box scene 8spp (1 sphere, 38 triangles)
 * OO: 18 / 18 / 18 
 * fp: 24 / 24 / 24
 * DoD: 19 / 19 / 19
 
+</div>
+
 ---
+
+<div class="white-bg">
+
+TODO: redo
 
 * Suzanne 8spp (2 spheres, 970 triangles)
 * OO: 90
 * fp: 145
 * DoD: 117
 
+</div>
+
 ---
+<div class="white-bg">
+
+TODO: redo
 
 * Owl scene 128spp (100 spheres, 12 triangles)
 * OO: 76 / 76 / 77
 * fp: 115 / 116 / 115
 * DoD: 64 / 64 / 64
 
+</div>
+
 ---
+
+<div class="white-bg">
+
+TODO: redo
 
 * CE logo
 * OO:
 * fp:
 * DoD:
 
+</div>
+
 
 ---
+
+<div class="white-bg">
 
 WRITE BENCHMARKS
 
@@ -72,7 +97,12 @@ WRITE BENCHMARKS
     fixed benchmark (x/x == 1)
   - https://godbolt.org/z/VJZEYb
 
---- 
+</div>
+
+---
+
+<div class="white-bg">
+ 
 * MYSTERY OF THE SLOW TRIANGLES in DoD
  * unhelpful profile...
  
@@ -81,3 +111,13 @@ WRITE BENCHMARKS
    0.61%  pt_three_ways  libm-2.27.so         [.] __sincos
    0.20%  pt_three_ways  pt_three_ways        [.] dod::Scene::render(
 ```
+
+</div>
+
+---
+
+<div class="white-bg">
+
+### If only I had more time...
+
+</div>

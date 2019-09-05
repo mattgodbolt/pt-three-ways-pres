@@ -1,13 +1,15 @@
 <div class="white-bg">
 
-# Style 2
 ## Functional Programming
+
+* ranges
+* `lt::optional`
 
 </div>
 
 ---
 
-### Scene
+### Scene <!-- .element: class="white-bg" -->
 
 ```cpp
 struct TrianglePrimitive {
@@ -25,7 +27,7 @@ using Primitive = std::variant<TrianglePrimitive, SpherePrimitive>;
 
 ---
 
-### Render
+### Render <!-- .element: class="white-bg" -->
 
 ```cpp
 auto renderOnePixel = [...](auto tuple) {
@@ -44,7 +46,7 @@ return ArrayOutput(renderParams.width, renderParams.height,
 
 ---
 
-### Radiance
+### Radiance <!-- .element: class="white-bg" -->
 
 ```cpp
 
@@ -59,7 +61,8 @@ if (!intersectionRecord)
 const auto incomingLight = accumulate(
     view::cartesian_product(view::ints(0, numVSamples),
                             view::ints(0, numUSamples))
-        | view::transform(toUVSample) | view::transform([&](auto s) {
+        | view::transform(toUVSample)
+        | view::transform([&](auto s) {
             return singleRay(scene, rng, *intersectionRecord, ray, basis,
                              s.first, s.second, depth + 1, renderParams);
           }),
@@ -72,40 +75,32 @@ return mat.emission + incomingLight / (numUSamples * numVSamples);
 ```cpp
 auto toUVSample = [&rng, &unit, numUSamples, numVSamples](auto vu) {
   auto [v, u] = vu;
-  const auto sampleU =
-      (static_cast<double>(u) + unit(rng)) / static_cast<double>(numUSamples);
-  const auto sampleV =
-      (static_cast<double>(v) + unit(rng)) / static_cast<double>(numVSamples);
+  const auto sampleU = (u + unit(rng)) / numUSamples;
+  const auto sampleV = (v + unit(rng)) / numVSamples;
   return std::make_pair(sampleU, sampleV);
 };
 ```
 
 ---
 
-### Intersection
+### Intersection <!-- .element: class="white-bg" -->
 
 ```cpp
 struct IntersectVisitor {
   const Ray &ray;
 
-  template <typename T, typename F,
-            typename ResultType =
-                std::optional<decltype(std::declval<F>()(std::declval<T>()))>>
-  static ResultType map(const std::optional<T> &t, F &&func) {
-    return t ? func(*t) : ResultType();
+  auto operator()(const TrianglePrimitive &primitive) const {
+    return primitive.triangle.intersect(ray)
+        .map([&primitive](auto hit) {
+            return IntersectionRecord{hit, primitive.material};
+        });
   }
 
-  std::optional<IntersectionRecord>
-  operator()(const TrianglePrimitive &primitive) const {
-    return map(primitive.triangle.intersect(ray), [&primitive](auto hit) {
-      return IntersectionRecord{hit, primitive.material};
-    });
-  }
-  std::optional<IntersectionRecord>
-  operator()(const SpherePrimitive &primitive) const {
-    return map(primitive.sphere.intersect(ray), [&primitive](auto hit) {
-      return IntersectionRecord{hit, primitive.material};
-    });
+  auto operator()(const SpherePrimitive &primitive) const {
+    return primitive.sphere.intersect(ray)
+        .map([&primitive](auto hit) {
+            return IntersectionRecord{hit, primitive.material};
+        });
   }
 };
 ```
@@ -116,6 +111,29 @@ struct IntersectVisitor {
 std::optional<IntersectionRecord> intersect(const Primitive &primitive,
                                             const Ray &ray) {
   return std::visit(IntersectVisitor{ray}, primitive);
+}
+```
+
+---
+
+```cpp
+tl::optional<Hit> Sphere::intersect(const Ray &ray) const noexcept {
+  const auto op = centre_ - ray.origin();
+  const auto b = op.dot(ray.direction());
+  return sqrtOptional(b * b - op.lengthSquared() + radius_ * radius_)
+      .and_then([&b](double determinant) -> tl::optional<double> {
+        const auto minusT = b - determinant;
+        const auto plusT = b + determinant;
+        if (minusT < Epsilon && plusT < Epsilon)
+          return tl::nullopt;
+        return minusT > Epsilon ? minusT : plusT;
+      })
+      .map([this, &ray](double t) {
+        const auto hitPosition = ray.positionAlong(t);
+        const auto normal = (hitPosition - centre_).normalised();
+        const bool inside = normal.dot(ray.direction()) > 0;
+        return Hit{t, inside, hitPosition, inside ? -normal : normal};
+      });
 }
 ```
 
@@ -137,7 +155,7 @@ std::optional<IntersectionRecord> intersect(const Scene &scene,
 
 ---
 
-### Materials
+### Materials  <!-- .element: class="white-bg" -->
 
 ```cpp
 Vec3 singleRay(const Scene &scene, std::mt19937 &rng,
@@ -179,6 +197,7 @@ Vec3 singleRay(const Scene &scene, std::mt19937 &rng,
 * `const` :allthethings:
 * Code seemed clearer?
 * Testability notes
-* Performance
+* Performance notes
+  - rng per pixel to satisfy FP constraints?
 
 </div>

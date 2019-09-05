@@ -7,8 +7,6 @@
 
 ### Apply to C++ <!-- .element: class="fragment" -->
 
-<!-- TODO Maybe images of mandelbrot, emulator and path tracer? -->
-
 <aside class="notes">
 Hi everyone, welcome to my talk. This is going to be a story firstly and foremostly about C++ and how multi-paradigm it really is.
 
@@ -58,6 +56,32 @@ This talk is not to be considered advice in general on how to do path tracing, o
 </div>
 
 ---
+
+<div class="white-bg">
+
+## Styles
+
+* Object Oriented <!-- .element: class="fragment" -->
+* Functional Programming <!-- .element: class="fragment" -->
+* Data-Oriented Design <!-- .element: class="fragment" -->
+
+<aside class="notes">
+
+### OO
+Model the problem as a hierarchy of "objects". Behaviour attached to objects directly through vtables.
+
+### FP
+Model the problem as simple immutable data, behaviour in free functions. Function overloading for polymorphism.
+
+### DoD
+Work backwards from the operations, designing the data around most common operations
+
+</aside>
+
+</div>
+
+---
+
 <div class="white-bg">
 
 ## Path tracing
@@ -168,41 +192,18 @@ Of course, I had to write it three times too! I learned it's really hard to igno
 
 
 ---
-<div class="white-bg">
-
-## Styles
-
-* Object Oriented <!-- .element: class="fragment" -->
-* Functional Programming <!-- .element: class="fragment" -->
-* Data-Oriented Design <!-- .element: class="fragment" -->
-
-<aside class="notes">
-
-### OO
-Model the problem as a hierarchy of "objects". Behaviour attached to objects directly through vtables.
-
-### FP
-Model the problem as simple immutable data, behaviour in free functions. Function overloading for polymorphism.
-
-### DoD
-Work backwards from the operations, designing the data around most common operations
-
-</aside>
-
-</div>
-
----
 
 <div class="white-bg">
 
 ## General approach
 
 * Shared basic math library
-  * `Vec3`
+  * `Vec3` / `Norm3`
   * `Ray`
   * `Hit`
 * Some simple "util" classes
-* Shared `Material` classes
+  * `Material` struct
+  * `Camera`
 
 </div>
 

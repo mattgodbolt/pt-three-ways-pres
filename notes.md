@@ -141,3 +141,22 @@ In this talk Matt will show a toy path tracer project (a form of ray tracer) imp
 ```
 sorry, unimplemented: mangling reference_type
 ```
+
+---
+
+### First basement runthrough notes
+
+* Timings
+  - 7m to end of PT dec
+  - 12m to Styles
+  - 17m to beginning of OO
+  - 27m at sphere primt
+  - 32 at FP
+  - 45m to slide 5.9 (DoD scene intersect)
+  - 55m end
+* Notes
+  - Intro the 3 ways earlier?
+  - maybe consider render loop being first? 3.4
+  - highlightes on sphere prim
+  - Talk about Ranges and TL library
+  - add pics on conclusion

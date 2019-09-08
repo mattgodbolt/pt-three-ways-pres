@@ -98,6 +98,9 @@ WRITE BENCHMARKS
 <div class="white-bg">
  
 * MYSTERY OF THE SLOW TRIANGLES in DoD
+* http://localhost:10240/z/PQ3ySY
+    if (v < 0 || u + v > 1|| u < 0.0 || u > 1.0)
+SUPER SLOW
  * unhelpful profile...
  
 ```

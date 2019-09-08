@@ -27,14 +27,14 @@ class Primitive {
 public:
   virtual ~Primitive() = default;
   
-<div class="fragment highlight-current-code">  struct IntersectionRecord {
+<div class="fragment highlight-current-code" data-fragment-index="1">  struct IntersectionRecord {
     Hit hit;
     Material material;
   };
 </div>
-  [[nodiscard]] <span class="fragment highlight-current-code">virtual</span> bool intersect(
+  [[nodiscard]] <span class="fragment highlight-current-code" data-fragment-index="2">virtual</span> <span class="fragment highlight-current-code" data-fragment-index="3">bool</span> intersect(
     const Ray &ray, 
-    <span class="fragment highlight-current-code">IntersectionRecord &intersection</span>) const = 0;
+    <span class="fragment highlight-current-code" data-fragment-index="3">IntersectionRecord &intersection</span>) const = 0;
 };
 </code></pre>
 
@@ -79,7 +79,10 @@ Vec3 Renderer::radiance(
   int numVSamples = depth == 0 ? renderParams_.firstBounceVSamples : 1;
 </div></code></pre>
 
+<img src="images/pt2.png" class="fragment">
+
 ---
+
 <pre><code class="cpp" data-trim data-noescape>
   Vec3 result;
   for (auto uSample = 0; uSample < numUSamples; ++uSample) {

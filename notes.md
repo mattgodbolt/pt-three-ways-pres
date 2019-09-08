@@ -160,3 +160,59 @@ sorry, unimplemented: mangling reference_type
   - highlightes on sphere prim
   - Talk about Ranges and TL library
   - add pics on conclusion
+  
+  
+---
+
+### first actual runthrough
+
+* No timings, went well over
+* Notes
+  - Make OO more "OO" not enough of a caricature
+    - Use material() virtual methods for different types
+    - accessors()s for all
+  - Maybe drop long-winded explanation of the types
+  - CULL CULL CULL
+- Fixed the perf issue!!!!
+  - Get the `perf` results! BPU story is awesome
+
+---
+
+### TODOs
+
+- [ ] OO-ify material
+- [ ] more renderings! pictures everywhere
+- [ ] do drawings of PT slides
+- [ ] re-profile with and without the BPU fix
+- [ ] BPU slides
+
+---
+
+BPU notes:
+
+* 128x128 suzanne 8spp
+* perf stat
+  - oo ->
+```
+    93,163,010,466      cycles                    
+   252,203,645,149      instructions              #    2.71  insn per cycle         
+    23,158,824,048      branches                  #  845.438 M/sec                  
+       139,741,218      branch-misses             #    0.60% of all branches        
+```
+  - fp ->
+```
+   134,463,155,131      cycles                    
+   238,866,691,159      instructions              #    1.78  insn per cycle         
+    21,881,070,251      branches                  #  560.513 M/sec                  
+     1,105,066,725      branch-misses             #    5.05% of all branches        
+```
+  - dod -> 
+```
+   115,112,159,658      cycles                    
+   154,821,779,748      instructions              #    1.34  insn per cycle         
+    10,353,392,805      branches                  #  305.213 M/sec                  
+     1,242,670,094      branch-misses             #   12.00% of all branches        
+```
+* perf record -e branch-misses:p ...
+* bpu-fail.png
+* http://localhost:10240/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAM1QDsCBlZAQwBtMQAmAOk4GZSAKxABGUq2a1QyAKScAQnPmkAzqgCuxZBwDkmAB4FMxWgGp0GgEbtTLVsgCqEC%2BuuYAlDL6KADAEEDIxNzKxs7ZAA1Z1CPL18Aw2MzFzdbNmQAETwVAmjXdk9vGX9ivzx6U1pMZmJMHIg0WhyQ/MxTACpmUlNygkr1AFt3UxkAdnjTSZbUqpq6gizmrwzTEUwRHzjSqZ6K2dqcgElaLH0RvhWAWhEt/x3tqZpiUwhenvOVze93rwBhfoGcRGCiUeGGYwmOymKRsBAQ2Ww7AGH1MzBkAFZ5LRBhiMrc/FCpsx1ERTOoUeEnHCEUjCpDCQ9CXgqC9yX9TD5uD4RqNfmN/my%2BNhVlzPHdCVDGgRyupMPiJSNxYTiaSAG4U9JRakqRGYIb4xlQ5kvdXsznc/n8snA%2BSmU1CkU%2BMUEhVTKUyuVFJVQw07FWoUzaxZ9ZZpezBiDa3X6r0upksyPwlTB87/fbzYPg8a%2BiXpnIp0NB7IEeWuyZ5gjHU4ovClhmjPHesaNuOmWoETRmCtVgwGhs6dziEA6dE6Ui0Yc%2BMeoYd8kEKUxqTTaYF8ERjgiTgeDgDWIHRPiHOgALGOJzop6QZzoxyoQIfNxeB6Q4LAkGgBgAHPDsMgUBqoF%2BP7GCAwAAJxiFQP5BHeECWFupCWOUNQAJ7DuupAfgMmD0AA8rQrBoU%2BpBYAMkjAOwCH4LUyDSqqdQIQYmDICSugYb0mCsAhrB4JYxCob8GBsRuxB4AM6HPjQ9BMGwHA8Pw4jkSgShKOIvF3pAg6oJ%2B0p0HeOiXLhVDMDkt4aFoHAiIOXEjmeCHXvoAAcABslzOcepjAMgyCmGB3AiC8uCECQq5iKYglAb%2BoXDHOigKBuW7uLu%2B6HjZp7jvZw63vepCPlOSVHpwdnEdeCVPgV9HECoeB0CAx5AA%3D

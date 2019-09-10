@@ -2,6 +2,10 @@
 
 ## Object Oriented
 
+<img src="images/image.ex1.png" height="400px" alt="A close up of several spheres with differing material types">
+
+<div class="attribution">Scene credit: <a href="https://michaelfogleman.com">Michael Fogleman</a></div>
+
 </div>
 
 ---
@@ -29,7 +33,7 @@ public:
   
 <div class="fragment highlight-current-code" data-fragment-index="1">  struct IntersectionRecord {
     Hit hit;
-    Material material;
+    const Material *material{};
   };
 </div>
   [[nodiscard]] <span class="fragment highlight-current-code" data-fragment-index="2">virtual</span> <span class="fragment highlight-current-code" data-fragment-index="3">bool</span> intersect(
@@ -79,21 +83,20 @@ Vec3 Renderer::radiance(
   int numVSamples = depth == 0 ? renderParams_.firstBounceVSamples : 1;
 </div></code></pre>
 
-<img src="images/pt2.png" class="fragment">
+<img src="images/pt2.png" class="fragment" alt="Light scattered randomly from a point on a sphere">
 
 ---
 
 <pre><code class="cpp" data-trim data-noescape>
   Vec3 result;
-  for (auto uSample = 0; uSample < numUSamples; ++uSample) {
+<div class="fragment highlight-current-code">  Sampler sampler(*this, rng, depth + 1);
+</div>  for (auto uSample = 0; uSample < numUSamples; ++uSample) {
     for (auto vSample = 0; vSample < numVSamples; ++vSample) {
 <div class="fragment highlight-current-code">      auto u = (uSample + unit(rng)) / numUSamples;
       auto v = (vSample + unit(rng)) / numVSamples;
       auto p = unit(rng);
 </div>
-<div class="fragment highlight-current-code">      auto nextPath = material.bounce(hit, ray, u, v, p);
-      result += nextPath.colour * 
-            radiance(rng, nextPath.bounced, depth + 1);
+<div class="fragment highlight-current-code">      result += material.sample(hit, ray, sampler, u, v, p);
 </div>    }
   }
 <div class="fragment highlight-current-code">  return material.totalEmission(result / (numUSamples * numVSamples));
@@ -130,19 +133,9 @@ bool Sphere::intersect(const Ray &ray, Hit &hit) const noexcept {
   auto determinant = b * b - op.lengthSquared() + radius_ * radius_;
   if (determinant < 0)
     return false;
-  determinant = sqrt(determinant);
 
-  auto minusT = b - determinant;
-  auto plusT = b + determinant;
-  if (minusT < Epsilon && plusT < Epsilon)
-    return false;
+  // [...more maths elided for clarity...]
 
-  auto t = minusT > Epsilon ? minusT : plusT;
-  auto hitPosition = ray.positionAlong(t);
-  auto normal = (hitPosition - centre_).normalised();
-  bool inside = normal.dot(ray.direction()) > 0;
-  if (inside)
-    normal = -normal;
   hit = Hit{t, inside, hitPosition, normal};
   return true;
 }
@@ -162,22 +155,47 @@ bool Triangle::intersect(const Ray &ray, Hit &hit) const noexcept {
 
 ---
 
-```cpp
-Material::Bounce Material::bounce(const Hit &hit, const Ray &incoming, double u,
-                                  double v, double p) const {
-  // [reflectiviy and ior calculation elided...]
-  if (p < reflectivity) {
-    return Bounce{
-        Vec3(1, 1, 1),
-        Ray(hit.position, coneSample(hit.normal.reflect(incoming.direction()),
-                                     mat_.reflectionConeAngleRadians, u, v))};
-  } else {
-    auto basis = OrthoNormalBasis::fromZ(hit.normal);
-    return Bounce{mat_.diffuse,
-                  Ray(hit.position, hemisphereSample(basis, u, v))};
-  }
-}
-```
+<pre><code class="cpp" data-trim data-noescape>
+class Material {
+public:
+  virtual ~Material() = default;
+
+<div class="fragment highlight-current-code">  class RadianceSampler {
+  public:
+    virtual ~RadianceSampler() = default;
+
+    [[nodiscard]] virtual Vec3 sample(const Ray &ray) const = 0;
+  };
+</div>
+<div class="fragment highlight-current-code">  [[nodiscard]] virtual Vec3 sample(
+        const Hit &hit, const Ray &incoming,
+        const RadianceSampler &radianceSampler,
+        double u, double v, double p) const = 0;
+</div>};
+</code></pre>
+
+---
+
+<pre><code class="cpp" data-trim data-noescape>
+class ShinyMaterial : public Material {
+  MaterialSpec mat_;
+public:
+  Vec3 sample(
+        const Hit &hit, const Ray &incoming,
+        const RadianceSampler &radianceSampler, double u,
+        double v, double p) const override {
+        
+<div class="fragment highlight-current-code">    if (p < mat_.reflectivity) {
+      return radianceSampler.sample(
+          Ray(hit.position, coneSample(/*...reflection...*/, u, v)));
+    }
+</div>    
+<div class="fragment highlight-current-code">    return mat_.diffuse
+           * radianceSampler.sample(
+               Ray(hit.position, hemisphereSample(hit.normal, u, v)));
+</div>  }
+};
+</code></pre>
 
 ---
 
@@ -186,7 +204,7 @@ Material::Bounce Material::bounce(const Hit &hit, const Ray &incoming, double u,
 ### Things I liked
 
 * Code layout
-* Testability notes
+* Testability
 * Performance
 
 </div>
@@ -198,5 +216,6 @@ Material::Bounce Material::bounce(const Hit &hit, const Ray &incoming, double u,
 ### Things I didn't like
 
 * Giving up `std::optional`
+* (Arguable) overuse of `virtual`
 
 </div>

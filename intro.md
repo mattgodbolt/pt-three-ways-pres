@@ -112,7 +112,7 @@ I show this not because it's a cool image (although it is), but to demonstrate w
 
 ## Path tracing
 
-<img src="images/pt1.png">
+<img src="images/pt1.png" alt="A ray is traced from an eye, through a pixel, until it intersects a sphere in a scene">
 
 <aside class="notes">
 What's going on? You've probably heard of ray tracing: path tracing is a generalised form of ray tracing which produces more accurate images but at a vastly increased cost.
@@ -133,7 +133,7 @@ We do that for every pixel, and voila! We have a pretty image!
 
 ## Path tracing
 
-<img src="images/pt2.png">
+<img src="images/pt2.png" alt="The ray is bounced in a random direction for the sphere, for diffuse materials">
 
 </div>
 
@@ -142,7 +142,7 @@ We do that for every pixel, and voila! We have a pretty image!
 
 ## Path tracing
 
-<img src="images/pt3.png">
+<img src="images/pt3.png" alt="The ray continues bouncing, accumulating colour and light intensity from the surfaces it interacts with">
 
 </div>
 
@@ -186,7 +186,7 @@ Of course, I had to write it three times too! I learned it's really hard to igno
 <img src="images/cornell-1000spp.png"  width="auto" height="400" alt="A scene of simple shapes in a brightly lit box">
 <img src="images/suzanne-1000spp.png"  width="auto" height="400" alt="A rendering of a stylised monkey">
 
-<div class="attribution">Model credit: "Suzanne" from Blender<br>With thanks to Michael Fogleman</div>
+<div class="attribution">Model credit: "Suzanne" from Blender<br>With thanks to <a href="https://michaelfogleman.com">Michael Fogleman</a></div>
 
 </div>
 
@@ -202,7 +202,7 @@ Of course, I had to write it three times too! I learned it's really hard to igno
   * `Ray`
   * `Hit`
 * Some simple "util" classes
-  * `Material` struct
+  * `MaterialSpec` struct
   * `Camera`
 
 </div>

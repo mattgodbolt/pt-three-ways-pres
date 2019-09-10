@@ -2,6 +2,8 @@
 
 ## Data-oriented Design
 
+<img src="images/image.owl.png" height="400" alt="An image of a dot-matrix owl draw with shiny spheres">
+
 </div>
 
 ---

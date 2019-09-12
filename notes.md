@@ -216,3 +216,53 @@ BPU notes:
 * perf record -e branch-misses:p ...
 * bpu-fail.png
 * http://localhost:10240/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAM1QDsCBlZAQwBtMQAmAOk4GZSAKxABGUq2a1QyAKScAQnPmkAzqgCuxZBwDkmAB4FMxWgGp0GgEbtTLVsgCqEC%2BuuYAlDL6KADAEEDIxNzKxs7ZAA1Z1CPL18Aw2MzFzdbNmQAETwVAmjXdk9vGX9ivzx6U1pMZmJMHIg0WhyQ/MxTACpmUlNygkr1AFt3UxkAdnjTSZbUqpq6gizmrwzTEUwRHzjSqZ6K2dqcgElaLH0RvhWAWhEt/x3tqZpiUwhenvOVze93rwBhfoGcRGCiUeGGYwmOymKRsBAQ2Ww7AGH1MzBkAFZ5LRBhiMrc/FCpsx1ERTOoUeEnHCEUjCpDCQ9CXgqC9yX9TD5uD4RqNfmN/my%2BNhVlzPHdCVDGgRyupMPiJSNxYTiaSAG4U9JRakqRGYIb4xlQ5kvdXsznc/n8snA%2BSmU1CkU%2BMUEhVTKUyuVFJVQw07FWoUzaxZ9ZZpezBiDa3X6r0upksyPwlTB87/fbzYPg8a%2BiXpnIp0NB7IEeWuyZ5gjHU4ovClhmjPHesaNuOmWoETRmCtVgwGhs6dziEA6dE6Ui0Yc%2BMeoYd8kEKUxqTTaYF8ERjgiTgeDgDWIHRPiHOgALGOJzop6QZzoxyoQIfNxeB6Q4LAkGgBgAHPDsMgUBqoF%2BP7GCAwAAJxiFQP5BHeECWFupCWOUNQAJ7DuupAfgMmD0AA8rQrBoU%2BpBYAMkjAOwCH4LUyDSqqdQIQYmDICSugYb0mCsAhrB4JYxCob8GBsRuxB4AM6HPjQ9BMGwHA8Pw4jkSgShKOIvF3pAg6oJ%2B0p0HeOiXLhVDMDkt4aFoHAiIOXEjmeCHXvoAAcABslzOcepjAMgyCmGB3AiC8uCECQq5iKYglAb%2BoXDHOigKBuW7uLu%2B6HjZp7jvZw63vepCPlOSVHpwdnEdeCVPgV9HECoeB0CAx5AA%3D
+
+chat log--->
+
+Matt Godbolt 11:18 AM
+so! what you don't have there is the disaassembly which looks somethign like:
+
+Before:
+compare u with 0
+jump if less than to "next iter"
+compare u with 1
+jump if greater than to "next iter"
+...more code
+compare v with 0
+jump if less than...
+compare u+v with 1
+jump if more than...
+...actual code for the case if the ray intersecting
+
+...next iter...
+add one to index, jump back if not finished
+there are 4 branches in that code (each of the "jump if less than" etc)
+u and v are "where on the plane of the triangle" the ray intersects
+so if you can imagine almost all rays miss any one individual triangle
+so overall it's 99.99999% likely we will jump to "next iter"
+ideally we'd like the branch predictor to guess that, right?
+(so far so good?)
+(this is the code as it was before my change)
+the problem is, each branch is predicted individually by the branch predictor
+and looking at a single branch, e.g. "jump if u is less thatn 0" is RANDOM!
+u is equally likely to be -1212.121 or +123.232
+(and very unlikely to be in [0,1])
+this means the (u < 0) is unpredictable
+also, (u > 1) is similarly unpredictable: even though 99.99% of the time it's "the opposite of u < 0" (as in, the branches are anti-correlated)
+so the BPU basically gets it wrong 50% of the time
+--- solution phase ---
+• "u < 0" is unpredictable
+• "u > 1" is unpredictable
+• (u < 0 || u > 1) is 95% predictable (it's mostly false)
+• v < 0 is unpredictable
+• u+v > 1 unpredictable
+• (v < 0 | u+v > 1) is 98% prefdicatable (mostly false)
+• overall (u < 0 || u > 1 || v < 0 || u+v > 1) is 99.9999% predicable (almost always false)
+if we can force the compiler to emit one branch that is 99.999% predictable, we win!
+(btw: always false...the condition is always false, but the compiler has turned it into "if NOT this then goto skip", so it's "always taken")
+as it happens, GCC will turn those four comparisons, if in the same expression, into ONE jump and not four, using "conditional moves"
+BUT only in some cases. switching the order of the comparisons sometimes makes it go back to four jumps (!!!!)
+so! how do we (99%) guarantee the compiler doens't use separate jumps for each of the subexpressions in (a || b || c || d) (we know in some cases it_has_ to use jumps as there is short-cirtcuiting in ||)
+we use LOGICAL OR!
+(a | b | c | d) HAS to evaluate a, b, c and d and THEN look at the result
+there's only one result, so there's only one jump

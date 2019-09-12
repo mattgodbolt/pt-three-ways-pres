@@ -180,11 +180,12 @@ sorry, unimplemented: mangling reference_type
 
 ### TODOs
 
-- [ ] OO-ify material
-- [ ] more renderings! pictures everywhere
+- [*] OO-ify material
+- [ ] more renderings! pictures everywhere, esp FP
 - [ ] do drawings of PT slides
-- [ ] re-profile with and without the BPU fix
+- [*] re-profile with and without the BPU fix
 - [ ] BPU slides
+- [ ] re-profile with OO changes
 
 ---
 

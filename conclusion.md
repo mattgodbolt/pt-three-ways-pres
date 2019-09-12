@@ -9,6 +9,7 @@
 ---
 
 ### Future work down the line?
+
 * purposefully no acceleration structures
 * k-d tree means subset? O(N) vs O(log N)
 * not talked about threading (though had to put it in)
@@ -21,6 +22,7 @@
 
 ### Performance
 
+* TODO redo all these!!
 ```
 [77852.398974] mce: CPU7: Package temperature above threshold, cpu clock throttled (total events = 144933)
 [77852.398975] mce: CPU3: Package temperature above threshold, cpu clock throttled (total events = 144933)

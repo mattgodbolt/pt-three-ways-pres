@@ -2,7 +2,7 @@
 
 ## Data-oriented Design
 
-<img src="images/image.owl.png" height="400" alt="An image of a dot-matrix owl draw with shiny spheres">
+<img src="images/image.owl.png" height="400" alt="An image of a dot-matrix owl drawn with shiny spheres">
 
 </div>
 
@@ -23,9 +23,8 @@
 
 ### Changes
 
-* Intersection, most common op
+* Most common: Intersection
   * Only need nearest
-  * Very often doesn't intersect, or further away
 * Two types of object
   * Separate into two lists
 
@@ -48,56 +47,45 @@ class Scene {
 
 ---
 
-### Intersection <!-- .element: class="white-bg" -->
+### Intersection - Spheres <!-- .element: class="white-bg" -->
 
-```cpp
-std::optional<IntersectionRecord>
-Scene::intersectSpheres(const Ray &ray, double nearerThan) const {
-  double currentNearestDist = nearerThan;
-  std::optional<size_t> nearestIndex;
-  for (size_t sphereIndex = 0; sphereIndex < spheres_.size(); ++sphereIndex) {
-    // Solve t^2*d.d + 2*t*(o-p).d + (o-p).(o-p)-R^2 = 0...
-    // <mathsy stuff here>
-    // - if doesn't intersect, continue
-    // end up with t = distance
-    auto t = ...;
-    if (t < currentNearestDist) {
-      nearestIndex = sphereIndex;
-      currentNearestDist = t;
-    }
+<pre><code class="cpp" data-trim data-noescape>
+double nearestDist = nearerThan;
+std::optional&lt;size_t> nearestIndex;
+
+<div class="fragment highlight-current-code" data-fragment-index="1">for (size_t sphereIdx = 0; sphereIdx &lt; spheres_.size(); ++sphereIdx) {
+</div>  <span class="fragment highlight-current-code" data-fragment-index="2">// ...maths...</span>
+<div class="fragment highlight-current-code" data-fragment-index="3">  if (!hit) continue;
+</div>
+<div class="fragment highlight-current-code" data-fragment-index="4">  if (distance < currentNearestDist) {
+    nearestIndex = sphereIdx; nearestDist = distance;
   }
-```
+</div><div class="fragment highlight-current-code" data-fragment-index="1">}
+</div>
+if (!nearestIndex) return {}; // missed all spheres
+
+<div class="fragment highlight-current-code" data-fragment-index="5">// ...more maths to calc hit positions, normal...
+return IntersectionRecord{Hit{...}, sphereMaterials_[*nearestIndex]};
+</div></code></pre>
 
 ---
 
-```cpp
-  if (!nearestIndex)
-    return {};
 
-  auto hitPosition = ray.positionAlong(currentNearestDist);
-  auto normal = (hitPosition - spheres_[*nearestIndex].centre).normalised();
-  bool inside = normal.dot(ray.direction()) > 0;
-  if (inside)
-    normal = -normal;
-  return IntersectionRecord{
-      Hit{currentNearestDist, inside, hitPosition, normal},
-      sphereMaterials_[*nearestIndex]};
-}
-```
+### Intersection - Triangles<!-- .element: class="white-bg" -->
 
----
-
-```cpp
-std::optional<IntersectionRecord> Scene::intersect(const Ray &ray) const {
-  auto sphereRec =
-      intersectSpheres(ray, std::numeric_limits<double>::infinity());
-  auto triangleRec = intersectTriangles(
-      ray, sphereRec ? sphereRec->hit.distance
-                     : std::numeric_limits<double>::infinity());
-  return triangleRec ? triangleRec : sphereRec;
-}
-```
-
+<pre><code class="cpp" data-trim data-noescape>
+<div class="fragment highlight-current-code" data-fragment-index="1">for (size_t triIdx = 0; triIdx &lt; triangleVerts_.size(); ++triIdx) {
+</div><div class="fragment highlight-current-code" data-fragment-index="2">  // ...calc u...maths, only needs triangle vertices...
+  if (u < 0 || u > 1) continue;
+</div><div class="fragment highlight-current-code" data-fragment-index="3">  // ...calc v...
+  if (v < 0 || u + v > 1) continue;
+</div><div class="fragment highlight-current-code" data-fragment-index="4">  // ...calc dist...
+  if (dist < nearest) { /* note this as nearest */ }
+</div><div class="fragment highlight-current-code" data-fragment-index="1">} 
+</div>
+<div class="fragment highlight-current-code" data-fragment-index="5">// ...more maths to calculate actual normal...
+return IntersectionRecord{Hit{...}, triangleMaterials_[*nearestIndex]};
+</div></code></pre>
 ---
 
 <div class="white-bg">
@@ -112,16 +100,19 @@ std::optional<IntersectionRecord> Scene::intersect(const Ray &ray) const {
 
 ### Things I liked
 
-* `const` :allthethings:
-* Code seemed clearer?
-* Testability notes
+* Ability to optimise
 * Performance
-  - rng per pixel to satisfy FP constraints?
+  - with caveat<!-- .element: class="fragment" -->
 
 </div>
 
-notes
-* was third time I wrote this. had already thought about how to
- improve
-* many techniques here would work in the other ways
-* IntersectionRecord - `const Material &` with optional?
+---
+
+<div class="white-bg">
+
+### Things I didn't like
+
+* Testability
+* Difficulty to change
+
+</div>

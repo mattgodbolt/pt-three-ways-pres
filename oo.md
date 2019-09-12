@@ -2,7 +2,7 @@
 
 ## Object Oriented
 
-<img src="images/image.ex1.png" height="400px" alt="A close up of several spheres with differing material types">
+<img src="images/image.ex1.png" height="400" alt="A close up of several spheres with differing material types">
 
 <div class="attribution">Scene credit: <a href="https://michaelfogleman.com">Michael Fogleman</a></div>
 

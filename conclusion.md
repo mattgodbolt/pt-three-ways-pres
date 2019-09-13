@@ -49,19 +49,6 @@
 </div>
 
 ---
-
-<div class="white-bg">
-
-<img src="images/suzanne-bench.png">
-
-* Suzanne 256x256 8spp (2 spheres, 970 triangles)
-* OO: 79s
-* fp: 120s
-* DoD: 104s
-
-</div>
-
----
 <div class="white-bg">
 
 <img src="images/owl-bench.png">
@@ -77,9 +64,16 @@
 
 <div class="white-bg">
 
-CE logo?
+<img src="images/suzanne-bench.png">
+
+* Suzanne 256x256 8spp (2 spheres, 970 triangles)
+* OO: 79s
+* fp: 120s
+* DoD: 104s
+  - what on earth!?! <!-- .element: class="fragment" -->
 
 </div>
+
 
 ---
 

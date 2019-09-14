@@ -5,16 +5,6 @@
 ### Favourite?
 
 * All of the above!!
-
----
-
-### Future work down the line?
-
-* purposefully no acceleration structures
-* k-d tree means subset? O(N) vs O(log N)
-* not talked about threading (though had to put it in)
-* Dod: first bounce: defer next radiance call?
-  - make a queue of pixel/Ray/depth
   
 ---
 
@@ -23,13 +13,8 @@
 ### Performance
 
 * TODO redo all these!!
-```
-[77852.398974] mce: CPU7: Package temperature above threshold, cpu clock throttled (total events = 144933)
-[77852.398975] mce: CPU3: Package temperature above threshold, cpu clock throttled (total events = 144933)
-```
-
 * Intel(R) Core(TM) i9-9980XE CPU @ 3.00GHz
-* `sudo cpupower frequency-set --governor performance`
+* `cpupower frequency-set --governor performance`
 * Single threaded
 
 </div>
@@ -151,4 +136,22 @@ for (/* all triangles */) {
 
 ---
 
-<img src="images/image.ex1.png" height=600 alt="Some spheres">
+<div class="white-bg">
+
+### Not enough time...
+
+* Threading
+* Devirtualisation
+* Future
+  - purposefully no acceleration structures
+  - k-d tree means subset? O(N) vs O(log N)
+* DoD: first bounce: defer next radiance call?
+  - make a queue of pixel/Ray/depth
+  - SIMD techniques (drop `Vec3`)
+
+</div>
+
+---
+
+### THANK YOU!
+<img src="images/image.ex1.png" height=500 alt="Some spheres">

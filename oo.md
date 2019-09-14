@@ -15,8 +15,8 @@
 ### Major components
 
 * Scene
-* Render
-* Radiance
+* Renderer
+* Radiance calculation
 * Materials
 * Intersection
 
@@ -33,7 +33,7 @@ public:
   
 <div class="fragment highlight-current-code" data-fragment-index="1">  struct IntersectionRecord {
     Hit hit;
-    const Material *material{};
+    const Material *material = nullptr;
   };
 </div>
   [[nodiscard]] <span class="fragment highlight-current-code" data-fragment-index="2">virtual</span> <span class="fragment highlight-current-code" data-fragment-index="3">bool</span> intersect(
@@ -89,17 +89,17 @@ Vec3 Renderer::radiance(
 
 <pre><code class="cpp" data-trim data-noescape>
   Vec3 result;
-<div class="fragment highlight-current-code">  Sampler sampler(*this, rng, depth + 1);
+<div class="fragment highlight-current-code" data-fragment-index="2">  Sampler sampler(*this, rng, depth + 1);
 </div>  for (auto uSample = 0; uSample < numUSamples; ++uSample) {
     for (auto vSample = 0; vSample < numVSamples; ++vSample) {
-<div class="fragment highlight-current-code">      auto u = (uSample + unit(rng)) / numUSamples;
+<div class="fragment highlight-current-code" data-fragment-index="1">      auto u = (uSample + unit(rng)) / numUSamples;
       auto v = (vSample + unit(rng)) / numVSamples;
       auto p = unit(rng);
 </div>
-<div class="fragment highlight-current-code">      result += material.sample(hit, ray, sampler, u, v, p);
+<div class="fragment highlight-current-code" data-fragment-index="2">      result += material.sample(hit, ray, sampler, u, v, p);
 </div>    }
   }
-<div class="fragment highlight-current-code">  return material.totalEmission(result / (numUSamples * numVSamples));
+<div class="fragment highlight-current-code" data-fragment-index="3">  return material.totalEmission(result / (numUSamples * numVSamples));
 </div>}
 </code></pre>
 
@@ -152,8 +152,6 @@ bool Triangle::intersect(const Ray &ray, Hit &hit) const noexcept {
 ---
 
 ## Materials <!--- .element: class="white-bg" --->
-
----
 
 <pre><code class="cpp" data-trim data-noescape>
 class Material {

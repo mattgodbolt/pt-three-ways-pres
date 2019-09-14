@@ -113,7 +113,7 @@ struct IntersectVisitor {
   }
 };
 
-<div class="fragment highlight-current-code" data-fragment-index="3">tl::optional&lt;IntersectionRecord> intersect(
+<div class="fragment highlight-current-code" data-fragment-index="4">tl::optional&lt;IntersectionRecord> intersect(
     const Primitive &primitive, const Ray &ray) {
   return std::visit(IntersectVisitor{ray}, primitive);
 }
@@ -146,9 +146,20 @@ tl::optional&lt;Hit> Sphere::intersect(const Ray &ray) const noexcept {
 ### Things I liked
 
 * `const` :allthethings:
-* Code seemed clearer?
-* Testability notes
-* Performance notes
-  - rng per pixel to satisfy FP constraints?
+* Code clearer...maybe?
+* Testability
+* Performance
+  - `std::mt19937 rng` per pixel
+
+</div>
+
+---
+
+<div class="white-bg">
+
+### Things I didn't like
+
+* Cryptic compiler error messages
+* Concern I've broken FP tenets (`rng`...)
 
 </div>

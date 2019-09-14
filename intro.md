@@ -107,7 +107,10 @@ I show this not because it's a cool image (although it is), but to demonstrate w
 
 <div class="attribution">Image credit: <a href="http://www.kevinbeason.com/smallpt/">Kevin Beason</a></div>
 
+</div>
+
 ---
+
 <div class="white-bg">
 
 ## Path tracing
@@ -138,6 +141,7 @@ We do that for every pixel, and voila! We have a pretty image!
 </div>
 
 ---
+
 <div class="white-bg">
 
 ## Path tracing
@@ -147,6 +151,7 @@ We do that for every pixel, and voila! We have a pretty image!
 </div>
 
 ---
+
 <div class="white-bg">
 
 ## Path tracing
@@ -154,7 +159,7 @@ We do that for every pixel, and voila! We have a pretty image!
 For each pixel:
 
 1. Fire a zillion rays into the scene<!-- .element: class="fragment" -->
-2. Bounce them around and see where they end up<!-- .element: class="fragment" -->
+2. Bounce randomly; accumulate intensity & colour<!-- .element: class="fragment" -->
 3. Average them out<!-- .element: class="fragment" -->
 
 </div>
@@ -183,13 +188,12 @@ Of course, I had to write it three times too! I learned it's really hard to igno
 
 ## My path tracer
 
-<img src="images/cornell-1000spp.png"  width="auto" height="400" alt="A scene of simple shapes in a brightly lit box">
-<img src="images/suzanne-1000spp.png"  width="auto" height="400" alt="A rendering of a stylised monkey">
+<img src="images/cornell-1000spp.png" width="auto" height="400" alt="A scene of simple shapes in a brightly lit box">
+<img src="images/suzanne-1000spp.png" width="auto" height="400" alt="A rendering of a stylised monkey">
 
 <div class="attribution">Model credit: "Suzanne" from Blender<br>With thanks to <a href="https://michaelfogleman.com">Michael Fogleman</a></div>
 
 </div>
-
 
 ---
 
@@ -206,30 +210,3 @@ Of course, I had to write it three times too! I learned it's really hard to igno
   * `Camera`
 
 </div>
-
----
-```cpp
-class Vec3 {
-  double x_{}, y_{}, z_{};
-
-public:
-  constexpr Vec3() noexcept = default;
-  constexpr Vec3(double x, double y, double z) noexcept 
-    : x_(x), y_(y), z_(z) {}
-
-  [[nodiscard]] constexpr double x() const noexcept { return x_; }
-  [[nodiscard]] constexpr double y() const noexcept { return y_; }
-  [[nodiscard]] constexpr double z() const noexcept { return z_; }
-```
-
----
-```cpp
-  constexpr Vec3 operator+(const Vec3 &b) const noexcept {
-    return Vec3(x_ + b.x_, y_ + b.y_, z_ + b.z_);
-  }
-  constexpr Vec3 operator-(const Vec3 &b) const noexcept {
-    return Vec3(x_ - b.x_, y_ - b.y_, z_ - b.z_);
-  }
-
-  // ...and other operators, dot products, cross products, etc...
-```

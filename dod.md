@@ -23,7 +23,7 @@
 
 ### Changes
 
-* Most common: Intersection
+* Intersection is most common operation
   * Only need nearest
 * Two types of object
   * Separate into two lists
@@ -62,9 +62,9 @@ std::optional&lt;size_t> nearestIndex;
   }
 </div><div class="fragment highlight-current-code" data-fragment-index="1">}
 </div>
-if (!nearestIndex) return {}; // missed all spheres
-
-<div class="fragment highlight-current-code" data-fragment-index="5">// ...more maths to calc hit positions, normal...
+<div class="fragment highlight-current-code" data-fragment-index="5">if (!nearestIndex) return {}; // missed all spheres
+</div>
+<div class="fragment highlight-current-code" data-fragment-index="6">// ...more maths to calc hit positions, normal...
 return IntersectionRecord{Hit{...}, sphereMaterials_[*nearestIndex]};
 </div></code></pre>
 

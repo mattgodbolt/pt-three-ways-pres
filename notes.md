@@ -181,11 +181,12 @@ sorry, unimplemented: mangling reference_type
 ### TODOs
 
 - [*] OO-ify material
-- [ ] more renderings! pictures everywhere, esp FP
+- [ ] more renderings! pictures everywhere, background of conclusion
 - [ ] do drawings of PT slides
 - [*] re-profile with and without the BPU fix
 - [ ] BPU slides
 - [ ] re-profile with OO changes
+- [ ] links to github
 
 ---
 

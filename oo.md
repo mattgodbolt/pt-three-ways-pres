@@ -83,7 +83,7 @@ Vec3 Renderer::radiance(
   int numVSamples = depth == 0 ? renderParams_.firstBounceVSamples : 1;
 </div></code></pre>
 
-<img src="images/pt2.png" class="fragment" alt="Light scattered randomly from a point on a sphere">
+<img src="images/render_pt6.png" height=200 class="no-border fragment" alt="Light scattered randomly from a point on a sphere">
 
 ---
 

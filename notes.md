@@ -178,15 +178,32 @@ sorry, unimplemented: mangling reference_type
 
 ---
 
+### hotel room runthrough
+* timings:
+  - 16m to 3.5
+  - 25m to functional
+  - FORGOT CLOCK TIL 4.6
+  - 31m to DoD
+  - 40m to favoute
+  - FORGOT CLOCK TIL 6.7
+  - finished at 50m
+* notes
+  - [*] fix up picture on u/v bit
+  - [*] add bg to favourite
+  - [*] put code side by side for before/after DoD change
+  - [*] put DoD reveal on separate slide
+
+---
+
 ### TODOs
 
 - [*] OO-ify material
-- [ ] more renderings! pictures everywhere, background of conclusion
+- [*] more renderings! pictures everywhere, background of conclusion
 - [*] do drawings of PT slides
 - [*] re-profile with and without the BPU fix
-- [ ] BPU slides
-- [ ] re-profile with OO changes
-- [ ] links to github
+- [*] BPU slides
+- [*] re-profile with OO changes
+- [*] links to github
 
 ---
 

@@ -30,9 +30,9 @@ I guess this is also a story about how cool and exciting graphics programming is
 ## This talk is NOT
 
 * Expert advice on:
-  * path tracing
+  * Path tracing
   * C++ code styles
-* Style ?? is best!
+* Style "X" is best!
 
 <aside class="notes">
 Before we go too much further I have an admission: this talk is NOT quite a lot of things.
@@ -115,7 +115,17 @@ I show this not because it's a cool image (although it is), but to demonstrate w
 
 ## Path tracing
 
-<img src="images/pt1.png" alt="A ray is traced from an eye, through a pixel, until it intersects a sphere in a scene">
+<img src="images/render_pt1.png" height="400" width="711" class="no-border" alt="A very simple scene showing a sphere on a plane">
+
+</div>
+
+---
+
+<div class="white-bg">
+
+## Path tracing
+
+<img src="images/render_pt2.png" height="400" width="711" class="no-border" alt="A ray is traced from an eye, through a pixel, until it intersects a sphere in a scene">
 
 <aside class="notes">
 What's going on? You've probably heard of ray tracing: path tracing is a generalised form of ray tracing which produces more accurate images but at a vastly increased cost.
@@ -136,7 +146,25 @@ We do that for every pixel, and voila! We have a pretty image!
 
 ## Path tracing
 
-<img src="images/pt2.png" alt="The ray is bounced in a random direction for the sphere, for diffuse materials">
+<img src="images/render_pt3.png"  height="400" width="711" class="no-border" alt="A close up of the intersection">
+
+</div>
+
+---
+<div class="white-bg">
+
+## Path tracing
+
+<img src="images/render_pt4.png"  height="400" width="711" class="no-border" alt="The normal at the intersection">
+
+</div>
+
+---
+<div class="white-bg">
+
+## Path tracing
+
+<img src="images/render_pt5.png"  height="400" width="711" class="no-border" alt="A unit hemisphere around the normal">
 
 </div>
 
@@ -146,7 +174,7 @@ We do that for every pixel, and voila! We have a pretty image!
 
 ## Path tracing
 
-<img src="images/pt3.png" alt="The ray continues bouncing, accumulating colour and light intensity from the surfaces it interacts with">
+<img src="images/render_pt6.png"  height="400" width="711" class="no-border" alt="A random new direction is chosen">
 
 </div>
 

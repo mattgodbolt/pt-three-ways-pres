@@ -182,7 +182,7 @@ sorry, unimplemented: mangling reference_type
 
 - [*] OO-ify material
 - [ ] more renderings! pictures everywhere, background of conclusion
-- [ ] do drawings of PT slides
+- [*] do drawings of PT slides
 - [*] re-profile with and without the BPU fix
 - [ ] BPU slides
 - [ ] re-profile with OO changes

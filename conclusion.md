@@ -140,14 +140,12 @@ for (/* all triangles */) {
 
 ### Not enough time...
 
+* Code on [GitHub](https://github.com/mattgodbolt/pt-three-ways)
 * Threading
 * Devirtualisation
-* Future
-  - purposefully no acceleration structures
-  - k-d tree means subset? O(N) vs O(log N)
-* DoD: first bounce: defer next radiance call?
-  - make a queue of pixel/Ray/depth
-  - SIMD techniques (drop `Vec3`)
+* Future directions...
+* DoD improvements
+* Thanks to Luka
 
 </div>
 

@@ -243,5 +243,5 @@ Suzanne DoD: 106s &rarr; 68s (36% faster)
 
 ---
 
-### THANK YOU!
+### THANK YOU! <!-- .element: class="white-bg" -->
 <img src="images/image.ex1.png" height=500 alt="Some spheres">

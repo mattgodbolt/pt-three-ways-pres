@@ -104,16 +104,16 @@ Vec3 radianceAtIntersection(
 struct IntersectVisitor {
   const Ray &amp;ray;
 
-  template &lt;typename Primitive>
-  auto operator()(const Primitive &primitive) const {
-    return <span class="fragment highlight-current-code" data-fragment-index="1">primitive.shape.intersect(ray)</span>
-        .<span class="fragment highlight-current-code" data-fragment-index="2">map([&primitive](auto hit) {</span>
-<div class="fragment highlight-current-code" data-fragment-index="3">            return IntersectionRecord{hit, primitive.material};
+  template &lt;typename PrimT>
+  auto operator()(const PrimT &primitive) const {
+    return <span class="fragment highlight-current-code" data-fragment-index="2">primitive.shape.intersect(ray)</span>
+        .<span class="fragment highlight-current-code" data-fragment-index="3">map([&primitive](auto hit) {</span>
+<div class="fragment highlight-current-code" data-fragment-index="4">            return IntersectionRecord{hit, primitive.material};
 </div>        });
   }
 };
 
-<div class="fragment highlight-current-code" data-fragment-index="4">tl::optional&lt;IntersectionRecord> intersect(
+<div class="fragment highlight-current-code" data-fragment-index="1">tl::optional&lt;IntersectionRecord> intersect(
     const Primitive &primitive, const Ray &ray) {
   return std::visit(IntersectVisitor{ray}, primitive);
 }
@@ -123,10 +123,10 @@ struct IntersectVisitor {
 
 <pre><code class="cpp" data-trim data-noescape>
 tl::optional&lt;Hit> Sphere::intersect(const Ray &ray) const noexcept {
+  const auto determinant = /*...maths...*/;
+  return <span class="fragment highlight-current-code" data-fragment-index="1">safeSqrt(determinant)</span>
 
-  return <span class="fragment highlight-current-code" data-fragment-index="1">safeSqrt(/*...maths...*/)</span>
-
-      .<span class="fragment highlight-current-code" data-fragment-index="2">and_then</span>([&b](double determinant) -> tl::optional&lt;double> {
+      .<span class="fragment highlight-current-code" data-fragment-index="2">and_then</span>([&b](double root) -> tl::optional&lt;double> {
         /* ...calc minusT, plusT.. */
 <div class="fragment highlight-current-code" data-fragment-index="3">        if (/* ...too close to zero...*/)
           return tl::nullopt;
@@ -148,8 +148,6 @@ tl::optional&lt;Hit> Sphere::intersect(const Ray &ray) const noexcept {
 * `const` `:allthethings:`
 * Code clearer...maybe?
 * Testability
-* Performance
-  - `std::mt19937 rng` per pixel
 
 </div>
 
@@ -161,5 +159,7 @@ tl::optional&lt;Hit> Sphere::intersect(const Ray &ray) const noexcept {
 
 * Cryptic compiler error messages
 * Concern I've broken FP rules (`rng`...)
+* Performance
+  - `std::mt19937 rng` per pixel?
 
 </div>

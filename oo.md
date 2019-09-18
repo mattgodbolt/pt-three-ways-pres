@@ -2,10 +2,6 @@
 
 ## Object Oriented
 
-<img src="images/image.ex1.png" height="400" alt="A close up of several spheres with differing material types">
-
-<div class="attribution">Scene credit: <a href="https://michaelfogleman.com">Michael Fogleman</a></div>
-
 </div>
 
 ---
@@ -133,7 +129,8 @@ bool Sphere::intersect(const Ray &ray, Hit &hit) const noexcept {
   auto determinant = b * b - op.lengthSquared() + radius_ * radius_;
 <div class="fragment highlight-current-code" data-fragment-index="1">  if (determinant &lt; 0)
     return false;
-</div>
+</div>  auto root = sqrt(determinant);
+
   // [...more maths elided for clarity...]
 
 <div class="fragment highlight-current-code" data-fragment-index="2">  hit = Hit{t, inside, hitPosition, normal};
@@ -194,6 +191,17 @@ public:
 </div>  }
 };
 </code></pre>
+
+---
+
+<div class="white-bg">
+
+### Results
+
+<img src="images/image.ex1.png" height="400" alt="A close up of several spheres with differing material types">
+
+<div class="attribution">Scene credit: <a href="https://michaelfogleman.com">Michael Fogleman</a></div>
+</div>
 
 ---
 

@@ -13,7 +13,7 @@
 ## Functional Programming
 
 * `ranges_v3`
-* `lt::optional`
+* `tl::optional`
 
 </div>
 
@@ -145,7 +145,7 @@ tl::optional&lt;Hit> Sphere::intersect(const Ray &ray) const noexcept {
 
 ### Things I liked
 
-* `const` :allthethings:
+* `const` `:allthethings:`
 * Code clearer...maybe?
 * Testability
 * Performance
@@ -160,6 +160,6 @@ tl::optional&lt;Hit> Sphere::intersect(const Ray &ray) const noexcept {
 ### Things I didn't like
 
 * Cryptic compiler error messages
-* Concern I've broken FP tenets (`rng`...)
+* Concern I've broken FP rules (`rng`...)
 
 </div>

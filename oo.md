@@ -116,30 +116,30 @@ struct SpherePrimitive : Primitive {
   bool intersect(const Ray &ray,
                  IntersectionRecord &rec) const override {
     Hit hit;
-    if (!sphere.intersect(ray, hit))
+<div class="fragment highlight-current-code" data-fragment-index="1">    if (!sphere.intersect(ray, hit))
       return false;
-    rec = IntersectionRecord{hit, material};
+</div><div class="fragment highlight-current-code" data-fragment-index="2">    rec = IntersectionRecord{hit, material};
     return true;
-  }
+</div>  }
 };
 </code></pre>
 
 ---
 
-```cpp
+<pre><code class="cpp" data-trim data-noescape>
 bool Sphere::intersect(const Ray &ray, Hit &hit) const noexcept {
   auto op = centre_ - ray.origin();
   auto b = op.dot(ray.direction());
   auto determinant = b * b - op.lengthSquared() + radius_ * radius_;
-  if (determinant < 0)
+<div class="fragment highlight-current-code" data-fragment-index="1">  if (determinant &lt; 0)
     return false;
-
+</div>
   // [...more maths elided for clarity...]
 
-  hit = Hit{t, inside, hitPosition, normal};
+<div class="fragment highlight-current-code" data-fragment-index="2">  hit = Hit{t, inside, hitPosition, normal};
   return true;
-}
-```
+</div>}
+</code></pre>
 
 ---
 

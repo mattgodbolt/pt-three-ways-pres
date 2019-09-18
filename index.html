@@ -37,9 +37,10 @@
         }
 
         .reveal pre code {
-            box-shadow: 10px 10px #888;
-            border-radius: 10px;
-            padding: 10px;
+            box-shadow: 7px 7px #888;
+            border-radius: 7px;
+            padding: 7px;
+            max-height: 500px !important;
         }
 
         .highlighted-already {
@@ -58,6 +59,11 @@
         .lang-container div {
             padding: 10px;
             min-width: 2em;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
         }
 
         .float-left {
@@ -185,10 +191,6 @@
             font-style: italic;
         }
 
-        .reveal pre code {
-            max-height: 450px !important;
-        }
-
         div.footer {
             z-index: 1;
             font-size: small;
@@ -249,7 +251,7 @@
 <script>
     Reveal.initialize({
         history: true,
-        transition: 'fade',
+        transition: 'none',
         slideNumber: true,
         width: 1280,
         height: 720,

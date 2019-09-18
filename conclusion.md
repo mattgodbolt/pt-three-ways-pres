@@ -103,12 +103,12 @@ What on earth!?! <!-- .element: class="fragment" -->
      1,105,066,725   branch-misses   #    5.05% of all branches        
 ```
 ##### Data-oriented Design<!-- .element: class="white-bg" -->
-```bash
+<pre><code class="bash" data-trim data-noescape>
    154,821,779,748   instructions    #    1.34  insn per cycle         
     10,353,392,805   branches        #  305.213 M/sec                  
-     1,242,670,094   branch-misses   #   12.00% of all branches        
-```
-12% of all branches!?! <!-- .element: class="fragment white-bg" -->
+<div class="fragment highlight-current-code" data-fragment-index="1">     1,242,670,094   branch-misses   #   12.00% of all branches        
+</div></code></pre>
+12% of all branches!?! <!-- .element: class="fragment white-bg" data-fragment-index="1" -->
 
 ---
 
@@ -116,22 +116,38 @@ What on earth!?! <!-- .element: class="fragment" -->
 
 ---
 
+<div class="container">
+<div class="w45">
 <pre><code class="cpp" data-trim data-noescape>
 for (/* all triangles */) {
   auto u = calcU(/*...*/);
-  if (u &lt; 0 || u > 1) {
+<div class="fragment highlight-current-code" data-fragment-index="1">  if (u &lt; 0 || u > 1) {
     continue;
   }
-  auto v = calcV(/*...*/);
+</div>  auto v = calcV(/*...*/);
   if (v &lt; 0 || u + v > 1) {
     continue;
   }
-  auto dist = calcDist(/*...*/);
-  if (dist < nearest) {
+  auto dist = calcD(/*..*/);
+  if (dist &lt; nearest) {
     nearest = dist;
   }
 }
+</code></pre></div>
+
+<div class="w50" style="margin-top: 1em;">
+<pre><code class="asm fragment" data-fragment-index="1" data-trim data-noescape>
+vcomisd xmm14, xmm0 ; 0 >= u?
+ja skip
+vcomisd xmm0, [1.0] ; u >= 1.0?
+ja skip
 </code></pre>
+
+<div style="background: white" class="fragment">
+<img src="images/triangle.svg" class="no-border" height="300">
+</div></div>
+
+</div>
 
 ---
 
@@ -139,15 +155,16 @@ for (/* all triangles */) {
 
 ### Branch Prediction
 
-* `u < 0` unpredictable; `u > 1` unpredictable (50/50)
-* `(u < 0 || u > 1)` predictable (mostly true)
-  - if compiler chooses to combine comparisons<!-- .element: class="fragment" -->
-* `(u < 0 || u > 1 || v < 0 || u + v > 1)` even more predictable
-* Super sensitive to compiler...
-  - `(u < 0) | (u > 1) | ...`
-<!-- .element: class="fragment" --> 
+<ul>
+<li><code>u &lt; 0</code> unpredictable</li>
+<li><code>u > 1</code> unpredictable</li>
+<li class="fragment"><code>(u &lt; 0 || u > 1)</code> <i>should be</i> predictable</li>
+<li class="fragment"><code>(u &lt; 0 || u > 1 || v &lt; 0 || u + v > 1)</code> more so</li>
+</ul>
 
-[Link](http://localhost:10240/#g:!((g:!((g:!((h:codeEditor,i:(fontScale:2.23,j:1,lang:c%2B%2B,source:'//setup%0A++extern+double+calcU(double+someVal)%3B%0A++extern+double+calcV(double+someVal)%3B%0A++extern+double+calcDist(double+someVal)%3B%0A%0Adouble+sphereCalc(const+double+*input,+unsigned+num)+%7B%0A++double+nearest+%3D+1e100%3B%0A++for+(auto+index+%3D+0u%3B+index+%3C+num%3B+%2B%2Bindex)+%7B%0A++++auto+u+%3D+calcU(input%5Bindex%5D)%3B%0A++++if+(u+%3C+0+%7C%7C+u+%3E+1)+%7B%0A++++++continue%3B%0A++++%7D%0A++++auto+v+%3D+calcV(input%5Bindex%5D)%3B%0A++++if+(v+%3C+0+%7C%7C+u+%2B+v+%3E+1)+%7B%0A++++++continue%3B%0A++++%7D%0A++++auto+dist+%3D+calcDist(input%5Bindex%5D)%3B%0A++++if+(dist+%3C+nearest)+%7B%0A++++++nearest+%3D+dist%3B%0A++++%7D%0A++%7D%0A++return+nearest%3B%0A%7D'),l:'5',n:'0',o:'C%2B%2B+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:g91,filters:(b:'0',binary:'1',commentOnly:'0',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'1',trim:'1'),fontScale:2.23,lang:c%2B%2B,libs:!(),options:'-O3+-march%3Dskylake+-Wall+-Werror',source:1),l:'5',n:'0',o:'x86-64+gcc+9.1+(Editor+%231,+Compiler+%231)+C%2B%2B',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0')),l:'2',n:'0',o:'',t:'0')),version:4) 
+<div class="fragment">Super sensitive to compiler...<br>
+<code>(u &lt; 0) | (u > 1) | ...</code>
+</div>
 
 </div>
 

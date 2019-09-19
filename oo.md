@@ -106,7 +106,7 @@ Vec3 Renderer::radiance(
 <pre><code class="cpp" data-trim data-noescape>
 struct SpherePrimitive : Primitive {
   Sphere sphere;
-  Material material;
+  std::unique_ptr&lt;Material> material;
 
   [[nodiscard]]  
   bool intersect(const Ray &ray,
@@ -114,7 +114,7 @@ struct SpherePrimitive : Primitive {
     Hit hit;
 <div class="fragment highlight-current-code" data-fragment-index="1">    if (!sphere.intersect(ray, hit))
       return false;
-</div><div class="fragment highlight-current-code" data-fragment-index="2">    rec = IntersectionRecord{hit, material};
+</div><div class="fragment highlight-current-code" data-fragment-index="2">    rec = IntersectionRecord{hit, material.get()};
     return true;
 </div>  }
 };

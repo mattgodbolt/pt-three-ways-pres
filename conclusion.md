@@ -7,6 +7,7 @@
 ### Favourite?
 
 * All of the above!!
+* C++ is best when we can blend all its features
 
 </div>
   
@@ -158,12 +159,12 @@ ja skip
 <ul>
 <li><code>u &lt; 0</code> unpredictable</li>
 <li><code>u > 1</code> unpredictable</li>
-<li class="fragment"><code>(u &lt; 0 || u > 1)</code> <i>should be</i> predictable</li>
+<li class="fragment"><code>(u &lt; 0 || u > 1)</code> <i>should be</i> predictable*</li>
 <li class="fragment"><code>(u &lt; 0 || u > 1 || v &lt; 0 || u + v > 1)</code> more so</li>
 </ul>
 
-<div class="fragment">Super sensitive to compiler...<br>
-<code>(u &lt; 0) | (u > 1) | ...</code>
+<div class="fragment">* Provided compiler combines conditions...<br>
+<code class="fragment">(u &lt; 0) | (u > 1) | ...</code>
 </div>
 
 </div>

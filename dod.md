@@ -35,15 +35,15 @@
 
 ### Scene <!-- .element: class="white-bg" -->
 
-```cpp
+<pre><code class="cpp" data-trim data-noescape>
 class Scene {
-  std::vector<TriangleVertices> triangleVerts_;
-  std::vector<TriangleNormals> triangleNormals_;
-  std::vector<Material> triangleMaterials_;
-
-  std::vector<Sphere> spheres_;
-  std::vector<Material> sphereMaterials_;
-```
+<div class="fragment highlight-current-code">  std::vector&lt;TriangleVertices> triangleVerts_;
+</div><div class="fragment highlight-current-code">  std::vector&lt;TriangleNormals> triangleNormals_;
+  std::vector&lt;Material> triangleMaterials_;
+</div>
+<div class="fragment highlight-current-code">  std::vector&lt;Sphere> spheres_;
+</div><div class="fragment highlight-current-code">  std::vector&lt;Material> sphereMaterials_;
+</div></code></pre>
 
 ---
 

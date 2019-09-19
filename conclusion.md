@@ -231,7 +231,7 @@ Suzanne DoD: 106s &rarr; 68s (36% faster)
 
 <div class="white-bg">
 
-### Not enough time...
+### If I had more time...
 
 * Code on [GitHub](https://github.com/mattgodbolt/pt-three-ways)
 * Threading
@@ -244,5 +244,5 @@ Suzanne DoD: 106s &rarr; 68s (36% faster)
 
 ---
 
-### THANK YOU! <!-- .element: class="white-bg" -->
+### GO WRITE SOMETHING COOL! <!-- .element: class="white-bg" -->
 <img src="images/image.ex1.png" height=500 alt="Some spheres">

@@ -1,3 +1,13 @@
+Canada!
+
+* Build with GCC 11?
+* ranges_v3 vs std::ranges
+* look into rng-per-pixel?
+* revisit Suzanne OO
+
+---
+
+
 # Intro
 
 * Hello who I am, why I care

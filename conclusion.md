@@ -20,7 +20,7 @@
 * Intel(R) Core(TM) i9-9980XE CPU @ 3.00GHz
 * `cpupower frequency-set --governor performance`
 * Single threaded
-* GCC 9.2
+* GCC 9.3
 
 </div>
 
@@ -40,9 +40,15 @@
 | Style | Render time (secs) |
 | ----- | -- |
 | Object Oriented | 72 |
-| Functional | 82 |
-| Data-Oriented | 72 |
+| Functional | 73 |
+| Data-Oriented | 64 |
 
+<aside class="notes">
+As of ba0d531fe93f3f5beb9461c7c03163a067b14128
+
+ninja -C cmake-build-release; and ./cmake-build-release/bin/pt_three_ways --way fp --scene cornell --spp 32 -w 256 -h 256 /tmp/cornell
+</pre>
+</aside>
 </div>
 
 ---
@@ -58,9 +64,13 @@
 | Style | Render time (secs) |
 | ----- | -- |
 | Object Oriented | 96 |
-| Functional | 101 |
+| Functional | 113 |
 | Data-Oriented | 64 |
 
+<aside class="notes">
+as per above, with:
+$ ninja -C cmake-build-release; and ./cmake-build-release/bin/pt_three_ways --way oo --scene bbc-owl --spp 128 -w 256 -h 256 /tmp/cornell
+</aside>
 </div>
 
 ---
@@ -77,12 +87,13 @@
 
 | Style | Render time (secs) |
 | ----- | -- |
-| Object Oriented | 80 |
-| Functional | 119 |
-| Data-Oriented | 106 |
+| Object Oriented | 96 |
+| Functional | 156 |
+| Data-Oriented | 123 (!!) |
 
 What on earth!?! <!-- .element: class="fragment" -->
 
+<aside class="notes">ninja -C cmake-build-release; and ./cmake-build-release/bin/pt_three_ways --way dod --scene suzanne --spp 8 -w 256 -h 256 /tmp/suz</aside>
 </div>
 
 ---
@@ -209,7 +220,7 @@ if ((u < 0) | (u > 1)
 
 ### FINAL STATS
 
-Suzanne DoD: 106s &rarr; 68s (36% faster)
+Suzanne DoD: 123s &rarr; 80s (35% faster)
 
 </div>
 
@@ -219,13 +230,14 @@ Suzanne DoD: 106s &rarr; 68s (36% faster)
 
 ### FINAL STATS
 
-| Scene   | OO | FP | DoD |
-| -----   | -- | -- | --- |
-| Cornell | 72 &rarr; 64 | 82 &rarr; 64 | 72 &rarr; 56 |
-| Owl     | 96 &rarr; 96 | 101 &rarr; 100 | 64 &rarr; 64 |
-| Suzanne | 80 &rarr; 104 (!) | 119 &rarr; 82 | 106 &rarr; 68 |
-
+| Scene   | OO             | FP             | DoD |
+| -----   | --             | --             | --- |
+| Cornell | 72 &rarr; 64   | 73 &rarr;  74  | 64 &rarr; 64 |
+| Owl     | 96 &rarr; 97   | 113 &rarr; 112 | 64 &rarr; 64 |
+| Suzanne | 96 &rarr; 107* | 156 &rarr; 109 | 123 &rarr; 80 |
 </div>
+
+* actually gets worse...
 
 ---
 
@@ -234,11 +246,11 @@ Suzanne DoD: 106s &rarr; 68s (36% faster)
 ### If I had more time...
 
 * Code on [GitHub](https://github.com/mattgodbolt/pt-three-ways)
-* Threading
-* Devirtualisation
-* Future directions...
+* "How easy is it to extend?"
+* `std::range`
 * DoD improvements
-* Thanks
+* Thanks!
+* I welcome your questions!
 
 </div>
 
@@ -246,3 +258,65 @@ Suzanne DoD: 106s &rarr; 68s (36% faster)
 
 ### GO WRITE SOMETHING COOL! <!-- .element: class="white-bg" -->
 <img src="images/image.ex1.png" height=500 alt="Some spheres">
+
+---
+
+<div class="white-bg">
+
+### Bonus slides
+
+76s
+
+<pre><code class="cpp" data-trim data-noescape>
+[[nodiscard]] static bool any2(bool x1, bool x2) noexcept {
+  volatile bool result = x1;
+  result |= x2;
+  return result;
+}
+</code></pre>
+
+</div>
+
+---
+
+<div class="white-bg">
+
+### Bonus slides
+
+71s
+
+<pre><code class="cpp" data-trim data-noescape>
+  [[nodiscard]] static bool any2(bool x1, bool x2) noexcept {
+    bool result = x1;
+    asm volatile(
+        "or %2, %0"
+        : "=r"(result)
+        : "r"(result), "r"(x2)
+        );
+    return result;
+  }
+</code></pre>
+
+</div>
+
+---
+
+<div class="white-bg">
+
+### Bonus slides
+
+62s... same but compile with gcc 11
+
+<pre><code class="cpp" data-trim data-noescape>
+  [[nodiscard]] static bool any2(bool x1, bool x2) noexcept {
+    bool result = x1;
+    asm volatile(
+        "or %2, %0"
+        : "=r"(result)
+        : "r"(result), "r"(x2)
+        );
+    return result;
+  }
+</code></pre>
+
+</div>

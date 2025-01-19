@@ -114,5 +114,6 @@ return IntersectionRecord{Hit{...}, triangleMaterials_[*nearestIndex]};
 
 * Testability
 * Difficulty to change
+  - Perceived!<!-- .element: class="fragment" -->
 
 </div>
